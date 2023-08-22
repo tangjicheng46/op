@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/tangjicheng46/op/utils"
+	"os"
 )
 
 var removePycacheCmd = &cobra.Command{
@@ -11,11 +12,14 @@ var removePycacheCmd = &cobra.Command{
 	Short: "a",
 	Long:  "b",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args)
-		// RemovePycache(args[1])
+		errString := "[Command Error] usage: op remove_pycache input_directory"
+		if len(args) != 1 {
+			fmt.Println(errString)
+			os.Exit(1)
+		}
+		if err := utils.RemoveSpecific(args[0], "__pycache__"); err != nil {
+			fmt.Println(errString)
+			os.Exit(1)
+		}
 	},
-}
-
-func removePycache(root string) error {
-	return utils.RemoveSpecific(root, "__pycache__")
 }

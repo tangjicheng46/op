@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"github.com/spf13/cobra"
 )
 
@@ -11,16 +10,16 @@ var rootCmd = &cobra.Command{
 	Long:  "A simple tool to remove .pyc and __pycache__ directories.",
 	Run: func(cmd *cobra.Command, args []string) {
 		// Do nothing if no subcommand is specified
-		
-		fmt.Printf("[in rootCmd] %v\n", args)
-
 		if err := cmd.Help(); err != nil {
 			return
 		}
 	},
 }
 
-func Execute() error {
+func init() {
 	rootCmd.AddCommand(removePycacheCmd)
+}
+
+func Execute() error {
 	return rootCmd.Execute()
 }
