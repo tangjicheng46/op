@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"io/ioutil"
+	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
@@ -9,15 +9,21 @@ import (
 
 func TestRemoveSpecific(t *testing.T) {
 	// 创建临时目录作为测试数据
-	root, err := ioutil.TempDir("", "test")
+	root, err := os.MkdirTemp("", "test")
 	if err != nil {
 		t.Fatalf("Failed to create temp dir: %v", err)
 	}
-	defer os.RemoveAll(root)
+	defer func(path string) {
+		err := os.RemoveAll(path)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+	}(root)
 
 	// 在临时目录中创建要删除的文件
 	fileToDelete := filepath.Join(root, "delete.me")
-	if err := ioutil.WriteFile(fileToDelete, []byte("test data"), 0644); err != nil {
+	if err := os.WriteFile(fileToDelete, []byte("test data"), 0644); err != nil {
 		t.Fatalf("Failed to create test file: %v", err)
 	}
 
@@ -28,7 +34,7 @@ func TestRemoveSpecific(t *testing.T) {
 	}
 
 	fileToDeleteInSubdir := filepath.Join(subDir, "delete.me")
-	if err := ioutil.WriteFile(fileToDeleteInSubdir, []byte("test data"), 0644); err != nil {
+	if err := os.WriteFile(fileToDeleteInSubdir, []byte("test data"), 0644); err != nil {
 		t.Fatalf("Failed to create test file in subdir: %v", err)
 	}
 
