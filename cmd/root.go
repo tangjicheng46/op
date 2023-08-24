@@ -19,6 +19,7 @@ var rootCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(removePycacheCmd)
 	rootCmd.AddCommand(versionCmd)
+	rootCmd.AddCommand(tempCmd)
 }
 
 func Execute() error {
